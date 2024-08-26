@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    environment:
+      FLASK_ENV: testing  # Thiết lập môi trường kiểm thử
+    volumes:
+      - ./app:/app
+    command: pytest  # Chạy pytest khi container khởi động để kiểm thử ứng dụng
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
