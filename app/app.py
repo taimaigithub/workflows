@@ -26,7 +26,7 @@ def get_users():
         return str(e)
 @app.route('/time')
 def time():
-    time_now = datetime.now('%Y/%m/%d - %H:%M:%S')
-    return jsonify
+    time_now = datetime.now().strftime('%Y/%m/%d - %H:%M:%S')
+    return time_now
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
