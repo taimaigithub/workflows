@@ -4,10 +4,10 @@ services:
   web:
     build: .
     environment:
-      FLASK_ENV: testing  # Thiết lập môi trường kiểm thử
+      FLASK_ENV: testing  # Đặt môi trường cho Flask
     volumes:
       - ./app:/app
-    command: pytest  # Chạy pytest khi container khởi động để kiểm thử ứng dụng
+    command: pytest  # Đảm bảo pytest được chạy khi container khởi động
     depends_on:
       - db
 

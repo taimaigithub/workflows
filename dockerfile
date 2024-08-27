@@ -10,9 +10,10 @@ COPY app/requirements.txt /app/requirements.txt
 # Cài đặt các thư viện Python cần thiết
 RUN pip install -r requirements.txt
 RUN pip install watchdog
+RUN pip install pytest  # Cài đặt thêm pytest
 
 # Sao chép tất cả mã nguồn vào container
 COPY app/ /app
 
-# Chạy ứng dụng Flask với chế độ reload
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# Thiết lập lệnh mặc định để chạy pytest
+CMD ["pytest"]
