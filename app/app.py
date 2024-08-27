@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 import mysql.connector
-
+from datetime import datetime
 app = Flask(__name__)
 
 @app.route('/')
@@ -24,6 +24,9 @@ def get_users():
         return jsonify(users)
     except Exception as e:
         return str(e)
-
+@app.route('/time')
+def time():
+    time_now = datetime.now('%Y/%m/%d - %H:%M:%S')
+    return jsonify
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
