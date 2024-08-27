@@ -1,0 +1,41 @@
+# .github/workflows/ci.yml
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main  # Kích hoạt khi có mã mới đẩy lên nhánh 'main'
+  pull_request:
+    branches:
+      - main  # Kích hoạt khi có pull request đến nhánh 'main'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Sử dụng máy chủ Ubuntu để chạy CI
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2  # Lấy mã nguồn từ repository
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1  # Thiết lập Docker Buildx để hỗ trợ build container
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2  # Lưu cache Docker layers để tăng tốc độ build
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Set up Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install docker-compose -y  # Cài đặt Docker Compose trên runner
+
+    - name: Build and run tests
+      run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit  # Xây dựng và chạy các kiểm thử
+
+    - name: Tear down services
+      run: docker-compose down  # Dừng và xóa tất cả các container
